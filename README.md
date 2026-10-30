@@ -1,5 +1,5 @@
 # adv_yandex_xyin9 — исходники
-Авторы: okay_google & Chat GPT Astra. Версия комплекта **v1.0.0**, плагин **3.45.2**.
+**Автор: okay_google. Соавтор: ChatGPT Astra (ИИ-помощник OpenAI).** Версия комплекта **v1.0.0**, плагин **3.45.2**.
 
 [Готовая карта именно v1.0.0](https://github.com/okaygoogle101/adv_yandex_xyin9/releases/tag/v1.0.0) · [Скачать готовый ZIP v1.0.0](https://github.com/okaygoogle101/adv_yandex_xyin9/releases/download/v1.0.0/adv_yandex_xyin9.zip)
 
