@@ -1,0 +1,10 @@
+* text=auto
+*.bsp binary
+*.wad binary
+*.mdl binary
+*.spr binary
+*.wav binary
+*.tga binary
+*.amxx binary
+*.png binary
+*.jpg binary

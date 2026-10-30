@@ -1,0 +1,10 @@
+*.log
+*.prt
+*.lin
+*.p0
+*.p1
+*.p2
+*.p3
+*.pts
+Thumbs.db
+.DS_Store
