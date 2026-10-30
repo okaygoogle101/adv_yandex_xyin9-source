@@ -8,3 +8,6 @@
 *.pts
 Thumbs.db
 .DS_Store
+
+/assets/
+/source/photos/
