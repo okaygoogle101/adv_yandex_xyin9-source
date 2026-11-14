@@ -37,7 +37,7 @@ stock GalleryAudio_Stop()
     if (g_GalleryAudioCurrent>=0 && pev_valid(g_GalleryAudioMarker[g_GalleryAudioCurrent]))
     {
         new sample[64];formatex(sample,charsmax(sample),"yx_xyin9/gallery/yx_z%d.wav",g_GalleryAudioCurrent+1);
-        emit_sound(g_GalleryAudioMarker[g_GalleryAudioCurrent],CHAN_STATIC,sample,0.0,ATTN_NORM,SND_STOP,100);
+        emit_sound(g_GalleryAudioMarker[g_GalleryAudioCurrent],CHAN_STATIC,sample,0.0,ATTN_STATIC,SND_STOP,100);
     }
     g_GalleryAudioCurrent=-1;
 }
@@ -81,7 +81,7 @@ public GalleryAudio_OnPreThink(id)
     free_tr2(trace);if(blocked)return FMRES_IGNORED;
     GalleryAudio_Stop();
     new sample[64];formatex(sample,charsmax(sample),"yx_xyin9/gallery/yx_z%d.wav",slot+1);
-    emit_sound(g_GalleryAudioMarker[slot],CHAN_STATIC,sample,0.8,ATTN_NORM,0,100);
+    emit_sound(g_GalleryAudioMarker[slot],CHAN_STATIC,sample,0.8,ATTN_STATIC,0,100);
     g_GalleryAudioCurrent=slot;g_GalleryAudioNextUse=now+0.4;
     return FMRES_IGNORED;
 }

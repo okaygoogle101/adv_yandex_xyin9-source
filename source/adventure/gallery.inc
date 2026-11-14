@@ -47,6 +47,7 @@ stock Gallery_Init()
     }
     g_GalleryReady = true;
     register_forward(FM_PlayerPostThink, "Gallery_OnPostThink");
+    register_forward(FM_AddToFullPack, "Gallery_Visibility", 1);
     Gallery_NewRound();
 }
 
@@ -121,6 +122,7 @@ stock bool:Gallery_DrawName(slot, const frames[], count)
         if (!pev_valid(ent)) { Gallery_ClearSlot(slot); return false; }
         g_GalleryGlyphs[slot][j] = ent;
         set_pev(ent, pev_classname, GALLERY_GLYPH_CLASS);
+        set_pev(ent, pev_iuser4, slot + 1);
         engfunc(EngFunc_SetModel, ent, GALLERY_FONT_MODEL);
         set_pev(ent, pev_solid, SOLID_NOT);
         set_pev(ent, pev_movetype, MOVETYPE_NONE);
@@ -188,4 +190,34 @@ public Gallery_OnPostThink(id)
 stock Gallery_Update(Float:now)
 {
     for (new id = 1; id <= g_MaxPlayers; id++) Gallery_CheckPlayer(id, now);
+}
+
+new Float:g_GalleryVisibilityAt[33];
+new bool:g_GalleryVisible[33][GALLERY_PLACES];
+// Per viewer: at most six nearby occupied nameplates, at most 90 glyphs.
+public Gallery_Visibility(es, e, ent, host, hostflags, player, pSet)
+{
+    if (!g_GalleryReady || player || !pev_valid(ent) || !is_user_connected(host)) return FMRES_IGNORED;
+    new slot=pev(ent,pev_iuser4)-1;
+    if(slot<0 || slot>=GALLERY_PLACES) return FMRES_IGNORED;
+    new classname[32];pev(ent,pev_classname,classname,charsmax(classname));
+    if(!equal(classname,GALLERY_GLYPH_CLASS))return FMRES_IGNORED;
+    new Float:now=get_gametime();
+    if(now>=g_GalleryVisibilityAt[host]) {
+        g_GalleryVisibilityAt[host]=now+0.2;
+        new Float:origin[3],Float:dist[GALLERY_PLACES];pev(host,pev_origin,origin);
+        for(new i=0;i<GALLERY_PLACES;i++) {
+            dist[i]=get_distance_f(origin,g_GalleryOrigin[i]);
+            g_GalleryVisible[host][i]=false;
+        }
+        for(new k=0;k<6;k++) {
+            new best=-1;new Float:nearest=640.0;
+            for(new i=0;i<GALLERY_PLACES;i++)
+                if(g_GalleryOccupied[i] && !g_GalleryVisible[host][i] && dist[i]<=nearest) {best=i;nearest=dist[i];}
+            if(best<0)break;
+            g_GalleryVisible[host][best]=true;
+        }
+    }
+    if(!g_GalleryVisible[host][slot]) {forward_return(FMV_CELL,0);return FMRES_SUPERCEDE;}
+    return FMRES_IGNORED;
 }
